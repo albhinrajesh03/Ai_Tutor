@@ -1,24 +1,70 @@
-AI Tutor
+AI Tutor:
 
-Before running this project, make sure the following are installed on your system:
-- Ollama
-- Phi-3 Mini model (`phi3:mini`)
+A RAG-based AI Tutor built using:
 - Python
-- Python Packages: pip install -r requirements.txt (run this to install required packages)
-
-A simple RAG-based AI Tutor built using:
-- Python
+- FastAPI
 - ChromaDB
 - Sentence Transformers
 - CrossEncoder Reranking
-- Ollama (phi3:mini)
+- Groq API
+- PDF processing
 
 Features:
 - PDF text extraction
-- Chunking
+- Text chunking
 - Semantic search
-- Reranking
-- Local LLM integration
+- Reranking for better retrieval accuracy
+- AI-powered responses using Groq LLM
+- REST API with FastAPI
+- Interactive API testing through Swagger UI (`/docs`)
+- Strict document-based answering (reduces hallucinations)
+
+Project Workflow:
+
+User Question
+↓
+Retrieve relevant chunks from document
+↓
+Rerank retrieved chunks
+↓
+Build prompt with context
+↓
+Send prompt to Groq LLM
+↓
+Return final answer
+
+Requirements:
+Before running this project, make sure these are installed:
+- Python
+- Required packages
+Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+Environment Setup:
+Create a `.env` file in the project root:
+```.env
+GROQ_API_KEY=your_api_key_here
+```
 
 Run Project:
-python app.py
+
+Start FastAPI server:
+```bash
+python -m uvicorn api:app --reload
+```
+
+After running, open:
+API documentation:
+```text
+http://localhost:8000/docs
+```
+
+Tech Stack:
+- FastAPI → API backend
+- ChromaDB → Vector database
+- Sentence Transformers → Embedding generation
+- CrossEncoder → Reranking
+- Groq → LLM inference
+- PyPDF → PDF text extraction

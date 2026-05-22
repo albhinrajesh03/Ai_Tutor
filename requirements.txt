@@ -1,3 +1,8 @@
 pypdf
 sentence_transformers
 chromadb
+fastapi
+pydantic
+groq
+python-dotenv
+uvicorn

@@ -2,3 +2,4 @@ venv/
 chroma_db/
 *.pyc
 _pycache_/
+.env
