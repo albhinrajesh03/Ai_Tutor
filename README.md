@@ -1,70 +1,129 @@
 AI Tutor:
-
-A RAG-based AI Tutor built using:
-- Python
-- FastAPI
-- ChromaDB
-- Sentence Transformers
-- CrossEncoder Reranking
-- Groq API
-- PDF processing
+A RAG-based AI Tutor built using Python, FastAPI, ChromaDB, Sentence Transformers, CrossEncoder reranking, and a local LLM.
 
 Features:
 - PDF text extraction
 - Text chunking
-- Semantic search
-- Reranking for better retrieval accuracy
-- AI-powered responses using Groq LLM
-- REST API with FastAPI
+- Semantic search using embeddings
+- CrossEncoder reranking for better retrieval quality
+- AI-powered responses using a local LLM
+- FastAPI REST API
 - Interactive API testing through Swagger UI (`/docs`)
-- Strict document-based answering (reduces hallucinations)
+- Conversation history support
+- Debug endpoint for retrieval inspection
+
 
 Project Workflow:
-
 User Question
 ↓
 Retrieve relevant chunks from document
 ↓
 Rerank retrieved chunks
 ↓
-Build prompt with context
+Build prompt using:
+    - Retrieved context
+    - Previous conversation history
 ↓
-Send prompt to Groq LLM
+Send prompt to LLM
 ↓
 Return final answer
 
+
+Tech Stack:
+- Python → Core programming language
+- FastAPI → API backend
+- ChromaDB → Vector database
+- Sentence Transformers → Embedding generation
+- CrossEncoder → Retrieval reranking
+- Local LLM → Response generation
+- PyPDF → PDF text extraction
+
+
 Requirements:
-Before running this project, make sure these are installed:
+Before running this project, install:
 - Python
-- Required packages
+- Required Python packages
 Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-Environment Setup:
-Create a `.env` file in the project root:
-```.env
-GROQ_API_KEY=your_api_key_here
+
+Setup:
+Place your PDF file inside the project directory:
+```text
+Book.pdf
 ```
+
 
 Run Project:
-
 Start FastAPI server:
 ```bash
-python -m uvicorn api:app --reload
+python -m uvicorn api:app
 ```
 
+
+API Documentation:
 After running, open:
-API documentation:
 ```text
 http://localhost:8000/docs
 ```
+Swagger UI allows interactive testing of endpoints.
 
-Tech Stack:
-- FastAPI → API backend
-- ChromaDB → Vector database
-- Sentence Transformers → Embedding generation
-- CrossEncoder → Reranking
-- Groq → LLM inference
-- PyPDF → PDF text extraction
+
+Available Endpoints:
+- Ask question
+    POST
+    ```text
+    /question
+    ```
+    Request:
+    ```json
+    {
+        "question":"What is operators?"
+    }
+    ```
+    Response:
+    ```json
+    {
+        "answer":"Operators are..."
+    }
+    ```
+
+- Debug retrieval
+    POST
+
+    ```text
+    /debug
+    ```
+    Request:
+
+    ```json
+    {
+        "question":"Operators"
+    }
+    ```
+    Response:
+    ```json
+    {
+        "question":"Operators",
+        "retrieved_result":[...],
+        "history":[...]
+    }
+    ```
+
+
+Current Architecture:
+User
+↓
+FastAPI
+↓
+RAG Pipeline
+↓
+ChromaDB Retrieval
+↓
+CrossEncoder Reranking
+↓
+LLM
+↓
+Response
