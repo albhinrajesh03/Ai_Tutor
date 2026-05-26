@@ -49,11 +49,11 @@ def ask(data: Question):
     """
     answer=ask_llm(prompt)
 
-    set_memory()
+    set_memory("User", data.question)
+    set_memory("Ai", answer)
 
     return {
-            "answer": answer,
-            "source": result,
+            "answer": answer
         }
 
 
@@ -65,5 +65,6 @@ def debug(data: Question):
 
     return {
         "question": data.question,
-        "retrieved_result": result,
+        "source": result,
+        "history": get_memory()
     }
