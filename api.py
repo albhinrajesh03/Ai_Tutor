@@ -3,14 +3,13 @@ from pydantic import BaseModel
 from llm import ask_llm
 from pdf_loader import load_pdf
 from chromadb_reranker_rag import split_text, prepare_chunks, retrieve
+from memory import set_memory, get_memory
 
 text=load_pdf("Book.pdf")
 chunks=split_text(text)
 prepare_chunks(chunks)
 
 app=FastAPI()
-
-chat_history=[]
 
 class Question(BaseModel):
     question:str
@@ -29,7 +28,7 @@ def ask(data: Question):
 
 
     context="\n".join(result)
-    history="\n".join(chat_history)
+    history= get_memory()
 
     prompt= f"""
     You are a strict AI tutor.
@@ -50,14 +49,11 @@ def ask(data: Question):
     """
     answer=ask_llm(prompt)
 
-    chat_history.append(f"User: {data.question}")
-    chat_history.append(f"Ai: {answer}")
-
+    
 
     return {
             "answer": answer,
             "source": result,
-            "history": chat_history
         }
 
 
@@ -70,5 +66,4 @@ def debug(data: Question):
     return {
         "question": data.question,
         "retrieved_result": result,
-        "history": chat_history
     }
