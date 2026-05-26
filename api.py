@@ -49,7 +49,7 @@ def ask(data: Question):
     """
     answer=ask_llm(prompt)
 
-    
+    set_memory()
 
     return {
             "answer": answer,
