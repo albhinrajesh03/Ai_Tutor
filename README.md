@@ -107,7 +107,7 @@ Available Endpoints:
     ```json
     {
         "question":"Operators",
-        "retrieved_result":[...],
+        "source":[...],
         "history":[...]
     }
     ```
