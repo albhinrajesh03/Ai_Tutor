@@ -10,12 +10,15 @@ chunks=split_text(text)
 prepare_chunks(chunks)
 
 app=FastAPI()
+count=0
 
 class Question(BaseModel):
     question:str
 
 @app.post("/question")
 def ask(data: Question):
+
+    global count
     
     result=retrieve(data.question)
 
@@ -49,22 +52,11 @@ def ask(data: Question):
     """
     answer=ask_llm(prompt)
 
-    set_memory("User", data.question)
-    set_memory("Ai", answer)
+    count+=1
+    set_memory("User", data.question,count)
+    count+=1
+    set_memory("Ai", answer,count)
 
     return {
             "answer": answer
         }
-
-
-
-@app.post("/debug")
-def debug(data: Question):
-
-    result=retrieve(data.question)
-
-    return {
-        "question": data.question,
-        "source": result,
-        "history": get_memory()
-    }
