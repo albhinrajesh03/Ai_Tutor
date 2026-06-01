@@ -1,13 +1,19 @@
-chat_history=[]
-
-def set_memory(role, message):
+def set_memory(role, message, count):
     text=f"{role}:{message}"
-    chat_history.append(text)
+
+    if count%2==0:
+        text=text + "\n---END---\n"
 
     with open("history.txt","a") as file:
         file.write(text + "\n")
 
-def get_memory():
+
+
+def get_memory(limit=4):
 
     with open("history.txt","r") as file:
-        return file.read()
+        data=file.read()
+
+        conversation=data.split("---END---")
+
+        return "\n".join(conversation[-limit:])
