@@ -14,6 +14,14 @@ def get_memory(limit=4):
     with open("history.txt","r") as file:
         data=file.read()
 
-        conversation=data.split("---END---")
+        conversations=data.split("---END---")
 
-        return "\n".join(conversation[-limit:])
+        clean_convo=[]
+
+        for c in conversations:
+            c.strip()
+
+            if c:
+                clean_convo.append(c)
+
+        return "\n".join(clean_convo[-limit:])
