@@ -13,6 +13,8 @@ A RAG-based AI Tutor built using Python, FastAPI, ChromaDB, Sentence Transformer
 * Interactive API testing through Swagger UI (`/docs`)
 * Persistent conversation memory using `history.txt`
 * Context-aware responses using previous conversations
+* Source citations for retrieved document chunks
+* Document-grounded answers to reduce hallucinations
 
 ---
 
@@ -46,6 +48,10 @@ Send prompt to LLM
 ↓
 
 Generate answer
+
+↓
+
+Attach source citations
 
 ↓
 
@@ -139,7 +145,11 @@ Response:
 
 ```json
 {
-  "answer": "Operators are symbols used to perform operations on variables and values."
+  "answer": "Operators are symbols used to perform operations on variables and values.",
+  "sources": [
+    "15",
+    "42"
+  ]
 }
 ```
 
@@ -168,6 +178,26 @@ Ai: Operators are symbols used to perform operations.
 ```
 
 The AI can use recent conversations while answering new questions.
+
+---
+
+## Citation System
+
+Retrieved chunks are stored with unique IDs inside ChromaDB.
+
+Example:
+
+```json
+{
+  "answer": "Operators are symbols used to perform operations.",
+  "sources": [
+    "15",
+    "42"
+  ]
+}
+```
+
+This allows users to trace answers back to the document chunks used during retrieval.
 
 ---
 
@@ -205,6 +235,10 @@ Local LLM
 
 ↓
 
+Source Attribution
+
+↓
+
 Response
 
 ↓
@@ -224,5 +258,6 @@ Return Answer
 * Streaming responses
 * Chat history database integration
 * Web-based frontend
-* Source citations in answers
+* Multiple PDF support
 * Agentic workflows and tool calling
+* MCP (Model Context Protocol) integration

@@ -30,7 +30,12 @@ def ask(data: Question):
     }
 
 
-    context="\n".join(result)
+    context=""
+    sources=[]
+    for item in result:
+        context=context+item["chunk"]+"\n"
+        sources.append(item["id"])
+
     history= get_memory()
 
     prompt= f"""
@@ -58,5 +63,6 @@ def ask(data: Question):
     set_memory("Ai", answer,count)
 
     return {
-            "answer": answer
+            "answer": answer,
+            "sources": sources
         }

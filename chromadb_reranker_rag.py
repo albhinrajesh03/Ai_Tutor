@@ -27,15 +27,16 @@ def retrieve(question):
   encoded_question=model.encode([question]).tolist()
   results=collection.query(query_embeddings=encoded_question, n_results=5)
   retrieved_chunks=results["documents"][0]
+  retrieved_ids=results["ids"][0]
   
   pairs=[]
   for chunk in retrieved_chunks:
     pairs.append([question,chunk])
   scores=reranker.predict(pairs)
-  ranked=list(zip(retrieved_chunks, scores))
+  ranked=list(zip(retrieved_ids, retrieved_chunks, scores))
   ranked.sort(key=lambda x:x[1], reverse=True)
   final_chunks=[]
-  for chunk, score in ranked[:2]:
+  for chunk_id, chunk, score in ranked[:2]:
     if score > 0.5:
-      final_chunks.append(chunk)
+      final_chunks.append({"id":chunk_id, "chunk":chunk})
   return final_chunks
